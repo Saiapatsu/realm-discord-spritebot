@@ -36,6 +36,12 @@ do
 		red = "#ff0000", -- legends red
 		purple = "#cc66ff", -- supporter purple
 		
+		-- utreborn colors
+		sc = "#6AFFFB", -- sacred
+		lg = "#DDDD00", -- legendary
+		gs = "#D80D38", -- godslayer
+		gl = "#E01DBF", -- godly
+		
 		off = false,
 	}
 	
