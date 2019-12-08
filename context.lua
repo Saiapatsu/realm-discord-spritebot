@@ -246,7 +246,7 @@ function static()
 		
 		autocrop = true, -- whether to autocrop the image before processing it. stub.
 		-- crop only in increments of wtile/htile from the left and right!
-		sappend = true, -- whether to append the original spritesheet
+		sappend = false, -- whether to append the original spritesheet
 		
 		-- function that modifies this context based on user arguments
 		parse = parseAttributes,
