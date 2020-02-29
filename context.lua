@@ -85,6 +85,16 @@ do
 	end
 end
 
+local function parseGeometry(input)
+	-- WxH+X+Y = X, Y, W, H
+	-- +X+Y = X, Y, nil, nil
+	-- W = nil, nil, W, nil
+	-- xH = nil, nil, nil, H
+	assert(not input:match("[^%dx+]"), "Invalid geometry")
+	local w, h, x, y = (input):match("(%d*)x?(%d*)+?(%d*)+?(%d*)")
+	return tonumber(x), tonumber(y), tonumber(w), tonumber(h) -- returns nil on nonexistent fields
+end
+
 --==============================================================================
 --								Context modifiers
 --==============================================================================
@@ -107,11 +117,12 @@ local adjectives = {
 	end,
 	
 	tile = function(ctx, input)
-		input = assert(input, "Incomplete options")
-		input = parseInt(assert(input()))
-		assert(input ~= 0, "I'm not falling for that")
-		ctx.wtile = input
-		ctx.htile = input
+		x, y, w, h = parseGeometry(assert(input()))
+		assert(w, "Please specify a tiling square or rectangle size")
+		h = h or w
+		assert(w >= 0 and h >= 0, "Tiling dimensions must be no less than one pixel")
+		ctx.wtile = w
+		ctx.htile = h
 	end,
 	
 	glow = function(ctx, input)
