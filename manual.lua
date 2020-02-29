@@ -18,15 +18,48 @@ io.write("> ") local options = io.read()
 
 local ctx = context.static()
 if #options > 0 then
-	ctx = ctx:parse(tokenizer(options, 1))
+	local success, errmsg = pcall(ctx.parse, ctx, tokenizer(options, 1))
+	if not success then
+		p(errmsg)
+		io.read()
+		os.exit()
+	else
+		ctx = success
+	end
 end
 
-local die = 0
+local die = 0 -- count of active sprite processings
 
 for i = 3, #args do
 	die = die + 1
 	local path = args[i]
 	p(path)
+	
+	-- pick context
+	local ctx = ctx
+	local nameargs = path:match(";([^\\.]+)[^\\]+$")
+	if nameargs then
+		ctx = context.static()
+		
+		local success, errmsg
+		
+		success, errmsg = pcall(ctx.parse, ctx, tokenizer(nameargs, 1))
+		if not success then
+			p(errmsg)
+			io.read()
+			os.exit()
+		end
+		
+		success, errmsg = pcall(ctx.parse, ctx, tokenizer(options, 1))
+		if not success then
+			p(errmsg)
+			io.read()
+			os.exit()
+		end
+		
+		ctx = ctx:parse(tokenizer(nameargs, 1))
+		ctx = ctx:parse(tokenizer(options, 1))
+	end
 	
 	ctx:process(
 		fs.readFileSync(path),
