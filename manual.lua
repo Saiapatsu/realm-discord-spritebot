@@ -24,7 +24,7 @@ if #options > 0 then
 		io.read()
 		os.exit()
 	else
-		ctx = success
+		ctx = errmsg
 	end
 end
 
