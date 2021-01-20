@@ -77,6 +77,7 @@ function magItem(ctx, data, coord, callback)
 	
 	local cglow = ctx.cglow
 	local coutline = ctx.coutline
+	local cmatte = ctx.cmatte
 	
 	local rglow = cglow and ctx.rglow or 0
 	local routline = coutline and 1 or 0 -- todo: multiple outlines
@@ -99,6 +100,9 @@ function magItem(ctx, data, coord, callback)
 		
 		a = util.append
 	})
+	
+	-- erase matte color
+	:a(cmatte and {"-transparent", cmatte})
 	
 	-- set the original sheet aside if the original is necessary
 	:a(sappend and {"(", "+clone"})

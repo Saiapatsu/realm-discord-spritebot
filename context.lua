@@ -139,6 +139,13 @@ local adjectives = {
 		ctx.coutline = input
 	end,
 	
+	matte = function(ctx, input)
+		input = assert(input, "Incomplete options")
+		input = assert(input())
+		input = parseColor(input)
+		ctx.cmatte = input
+	end,
+	
 	-- gradient = function(ctx, input)
 		-- input = assert(input, "Incomplete options")
 		-- input = assert(input())
@@ -252,6 +259,7 @@ function static()
 		rglow = 8, -- radius of glow. may be odd. stub.
 		coutline = "#000000", -- outline color and alpha, disabled if false. alpha is usually 0xcc (204)
 		cglow = "#000000", -- glow color, disabled if false
+		cmatte = false, -- matte color, replaced with transparency, disabled if false
 		cgradient = "#202020", -- gradient color, disabled if false. stub.
 		mgradient = false, -- gradient blend mode. false is subtract, true is add. stub.
 		
