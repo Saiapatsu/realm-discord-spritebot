@@ -153,6 +153,28 @@ local adjectives = {
 		ctx.cmatte = input
 	end,
 	
+	anim = function(ctx, input)
+		local token = assert(input())
+		if token == "off" then
+			ctx.anim = false
+		elseif token == "player" then
+			error("Player anim not implemented")
+		elseif token == "char" then
+			error("Char anim not implemented")
+		else
+			ctx.anim = "tile"
+			x, y, w, h = parseGeometry(token) -- x,y unwisely used as anim delay
+			assert(w or h, "Please specify a size")
+			w, h = w and math.floor(w), h and math.floor(h)
+			assert((w and w > 0 or true) and (w and w > 0 or true), "Needs anim dimensions")
+			ctx.cbackground = ctx.cbackground or "#7f7f7f"
+			ctx.wanim = w or false -- scary, I might be allowing nils into the ctx elsewhere. todo:
+			ctx.hanim = h or false
+			ctx.tanim = x or false
+			ctx.tpsanim = y or false
+		end
+	end,
+	
 	-- gradient = function(ctx, input)
 		-- input = assert(input, "Incomplete options")
 		-- input = assert(input())
@@ -263,6 +285,11 @@ function static()
 		zoom = 1, -- zoom factor, same as scale except applied at the end. stub.
 		wtile = 8, -- sprite width
 		htile = 8, -- and height on the spritesheet in pixels
+		anim = false, -- type of animation
+		wanim = false, -- width of anim in tiles
+		hanim = false, -- height of anim in tiles
+		tanim = false, -- ticks each animation frame takes
+		tpsanim = false, -- anim ticks per second
 		rglow = 8, -- radius of glow. may be odd. stub.
 		coutline = "#000000", -- outline color and alpha, disabled if false. alpha is usually 0xcc (204)
 		cglow = "#000000", -- glow color, disabled if false

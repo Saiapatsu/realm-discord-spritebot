@@ -73,6 +73,8 @@ function magItem(ctx, data, coord, callback)
 	
 	print(coord, wsheet, hsheet, xcrop, ycrop)
 	
+	local anim, wanim, hanim, tanim, tpsanim = ctx.anim, ctx.wanim, ctx.hanim, ctx.tanim, ctx.tpsanim
+	
 	local scale = ctx.scale
 	
 	local cglow = ctx.cglow
@@ -89,17 +91,25 @@ function magItem(ctx, data, coord, callback)
 	-- magick command-line arguments
 	-- todo: a command that tells you the arguments instead of passing them to magick for you
 	local args = ({
-		
-		"-[0]",
-		
 		-- don't ever yap into stdout
 		"-quiet",
 		
+		a = util.append
+	})
+	
+	-- prepare for animation
+	:a(anim == "tile" and {
+		"-dispose", "background",
+		"-delay", (tanim or 100) .. "x" .. (tpsanim or 1000)
+	})
+	
+	:a({
+		-- read from stdout
+		"-[0]",
+		
 		-- apply the autocrop
 		"-crop", ("%sx%s+%s+%s"):format(wsheet, hsheet, xcrop, ycrop),
-		"+repage",
-		
-		a = util.append
+		"+repage"
 	})
 	
 	-- erase matte color
@@ -165,11 +175,18 @@ function magItem(ctx, data, coord, callback)
 		"-layers", "flatten",
 	})
 	
+	-- animate. other half is above
+	:a(anim == "tile" and {
+		"-crop", (wanim and wanim * 56 or "") .. "x" .. (hanim and hanim * 56 or ""),
+		"+repage",
+		"-alpha", "remove"
+	})
+	
 	-- append the original sheet
 	:a(sappend and {")", "+swap", wsheet >= hsheet and "-append" or "+append"})
 	
 	-- output to stdout
-	:a({"png32:-"}) -- todo: choose png24 if there is a background
+	:a({anim and "gif:-" or "png32:-"}) -- todo: choose png24 if there is a background
 	
 	args.a = nil
 	
