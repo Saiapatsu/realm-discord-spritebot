@@ -176,6 +176,10 @@ function magItem(ctx, data, coord, callback)
 	})
 	
 	-- animate. other half is above
+	-- todo
+	-- https://legacy.imagemagick.org/discourse-server/viewtopic.php?t=33797
+	-- https://stackoverflow.com/questions/49488629/append-two-gifs-side-by-side-with-imagemagick-on-windows
+	-- https://legacy.imagemagick.org/Usage/anim_mods/#composite_single
 	:a(anim == "tile" and {
 		"-crop", (wanim and wanim * 56 or "") .. "x" .. (hanim and hanim * 56 or ""),
 		"+repage",
