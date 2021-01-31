@@ -20,7 +20,7 @@ function autocrop(ctx, data, callback)
 			-- -trim will mark as extraneous anything that's the same color as the corners. 
 			-- there is no "option" that makes it only trim away transparent areas. the official
 			-- and Right Way is to add a border
-			"-bordercolor", "#00000000",
+			"-bordercolor", ctx.cmatte or "#00000000",
 			"-border", "1",
 			
 			-- report back the bounding box that -trim would crop to. this is used to
