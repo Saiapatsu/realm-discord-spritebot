@@ -77,6 +77,7 @@ function magItem(ctx, data, coord, callback)
 	
 	local cglow = ctx.cglow
 	local coutline = ctx.coutline
+	local cbackground = ctx.cbackground
 	local cmatte = ctx.cmatte
 	
 	local rglow = cglow and ctx.rglow or 0
@@ -160,7 +161,7 @@ function magItem(ctx, data, coord, callback)
 	-- merge and output
 	:a({
 		"-compose", "Over",
-		"-background", "#00000000", -- user-set bg here. cbackground or "#00000000"
+		"-background", cbackground or "#00000000", -- user-set bg here. cbackground or "#00000000"
 		"-layers", "flatten",
 	})
 	

@@ -132,6 +132,13 @@ local adjectives = {
 		ctx.cglow = input
 	end,
 	
+	bg = function(ctx, input)
+		input = assert(input, "Incomplete options")
+		input = assert(input())
+		input = parseColor(input)
+		ctx.cbackground = input
+	end,
+	
 	outline = function(ctx, input)
 		input = assert(input, "Incomplete options")
 		input = assert(input())
@@ -262,6 +269,7 @@ function static()
 		cmatte = false, -- matte color, replaced with transparency, disabled if false
 		cgradient = "#202020", -- gradient color, disabled if false. stub.
 		mgradient = false, -- gradient blend mode. false is subtract, true is add. stub.
+		cbackground = false, -- background color. disabled if false
 		
 		autocrop = true, -- whether to autocrop the image before processing it. stub.
 		-- crop only in increments of wtile/htile from the left and right!
